@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": "^8.3|^8.4",
-        "spatie/laravel-package-tools": "^1.14"
+        "spatie/laravel-package-tools": "^1.14",
+        "laravilt/support": "*@dev"
     },
     "require-dev": {
         "larastan/larastan": "^2.9||^3.0",
@@ -45,6 +46,12 @@
             "Laravilt\\Widgets\\Tests\\Database\\Seeders\\": "tests/database/seeders"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../support"
+        }
+    ],
     "scripts": {
         "testbench": "vendor/bin/testbench package:discover --ansi",
         "db": "vendor/bin/testbench package:create-sqlite-db && vendor/bin/testbench migrate",
