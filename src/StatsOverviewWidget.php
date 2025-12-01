@@ -1,0 +1,151 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Laravilt\Widgets;
+
+use Closure;
+
+class StatsOverviewWidget extends Widget
+{
+    /** @var array<int, Stat> */
+    protected array $stats = [];
+
+    protected int $columns = 3;
+
+    /**
+     * @param  array<int, Stat>  $stats
+     */
+    public function stats(array $stats): static
+    {
+        $this->stats = $stats;
+
+        return $this;
+    }
+
+    public function columns(int $columns): static
+    {
+        $this->columns = $columns;
+
+        return $this;
+    }
+
+    public function toInertiaProps(): array
+    {
+        return [
+            'component' => 'StatsOverviewWidget',
+            'heading' => $this->heading,
+            'description' => $this->description,
+            'stats' => array_map(
+                fn (Stat $stat) => $stat->toInertiaProps(),
+                $this->stats
+            ),
+            'columns' => $this->columns,
+            'polling' => [
+                'enabled' => $this->pollingEnabled,
+                'interval' => $this->pollingInterval,
+            ],
+        ];
+    }
+}
+
+class Stat
+{
+    protected string $label;
+
+    protected string|int|float|Closure $value;
+
+    protected ?string $description = null;
+
+    protected ?string $icon = null;
+
+    protected ?string $color = null;
+
+    protected ?string $chart = null;
+
+    protected ?array $chartData = null;
+
+    protected ?string $chartColor = null;
+
+    protected ?string $url = null;
+
+    protected bool $descriptionIcon = false;
+
+    protected ?string $descriptionColor = null;
+
+    public static function make(string $label, string|int|float|Closure $value): static
+    {
+        $stat = new static;
+        $stat->label = $label;
+        $stat->value = $value;
+
+        return $stat;
+    }
+
+    public function description(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function descriptionIcon(string $icon, ?string $color = null): static
+    {
+        $this->descriptionIcon = true;
+        $this->icon = $icon;
+        $this->descriptionColor = $color;
+
+        return $this;
+    }
+
+    public function icon(string $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function color(string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function chart(string $type, array $data, ?string $color = null): static
+    {
+        $this->chart = $type;
+        $this->chartData = $data;
+        $this->chartColor = $color;
+
+        return $this;
+    }
+
+    public function url(string $url): static
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function toInertiaProps(): array
+    {
+        $value = $this->value instanceof Closure
+            ? ($this->value)()
+            : $this->value;
+
+        return [
+            'label' => $this->label,
+            'value' => $value,
+            'description' => $this->description,
+            'icon' => $this->icon,
+            'color' => $this->color,
+            'chart' => $this->chart,
+            'chartData' => $this->chartData,
+            'chartColor' => $this->chartColor,
+            'url' => $this->url,
+            'descriptionIcon' => $this->descriptionIcon,
+            'descriptionColor' => $this->descriptionColor,
+        ];
+    }
+}
