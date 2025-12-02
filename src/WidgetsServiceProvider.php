@@ -46,6 +46,7 @@ class WidgetsServiceProvider extends ServiceProvider
             // Register commands
             $this->commands([
                 Commands\InstallWidgetsCommand::class,
+                Commands\MakeWidgetCommand::class,
             ]);
         }
     }

@@ -1,0 +1,32 @@
+<?php
+
+namespace {{ namespace }};
+
+use Laravilt\Widgets\PieChartWidget;
+
+/**
+ * {{ class }} Widget
+ *
+ * Pie chart widget for showing distribution.
+ */
+class {{ class }}
+{
+    /**
+     * Create the widget.
+     */
+    public static function make(): PieChartWidget
+    {
+        return PieChartWidget::make(
+            labels: ['Desktop', 'Mobile', 'Tablet'],
+            data: fn () => [450, 320, 180]
+        )
+            ->heading('Traffic by Device')
+            ->description('User distribution across devices')
+            ->height(300)
+            ->color('primary')
+            ->doughnut()
+            ->showLegend()
+            ->showPercentage()
+            ->polling(60);
+    }
+}

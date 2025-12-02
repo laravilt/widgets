@@ -1,0 +1,36 @@
+<?php
+
+namespace {{ namespace }};
+
+use Laravilt\Widgets\BarChartWidget;
+
+/**
+ * {{ class }} Widget
+ *
+ * Bar chart widget for comparing values.
+ */
+class {{ class }}
+{
+    /**
+     * Create the widget.
+     */
+    public static function make(): BarChartWidget
+    {
+        return BarChartWidget::make(
+            labels: ['Product A', 'Product B', 'Product C', 'Product D', 'Product E'],
+            datasets: [
+                [
+                    'label' => 'Sales',
+                    'data' => fn () => [150, 200, 180, 220, 170],
+                    'backgroundColor' => 'rgb(59, 130, 246)',
+                ],
+            ]
+        )
+            ->heading('Product Sales')
+            ->description('Sales by product')
+            ->height(300)
+            ->color('primary')
+            ->showGrid()
+            ->polling(60);
+    }
+}

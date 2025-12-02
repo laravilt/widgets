@@ -1,13 +1,20 @@
 {
     "name": "laravilt/widgets",
-    "description": "plugin for Laravilt",
+    "description": "Complete dashboard widget system with stats, charts, and custom widgets. Display key metrics and data visualizations with stats overview, line/bar/pie charts, and beautiful responsive widgets for dashboards.",
     "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "keywords": [
         "laravel",
         "laravilt",
-        "plugin"
+        "widgets",
+        "dashboard",
+        "charts",
+        "stats",
+        "statistics",
+        "visualization",
+        "inertia",
+        "vue"
     ],
     "authors": [
         {
@@ -18,7 +25,7 @@
     "require": {
         "php": "^8.3|^8.4",
         "spatie/laravel-package-tools": "^1.14",
-        "laravilt/support": "*@dev"
+        "laravilt/support": "^1.0"
     },
     "require-dev": {
         "larastan/larastan": "^2.9||^3.0",
@@ -46,12 +53,6 @@
             "Laravilt\\Widgets\\Tests\\Database\\Seeders\\": "tests/database/seeders"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../support"
-        }
-    ],
     "scripts": {
         "testbench": "vendor/bin/testbench package:discover --ansi",
         "db": "vendor/bin/testbench package:create-sqlite-db && vendor/bin/testbench migrate",
@@ -74,6 +75,5 @@
             ]
         }
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }

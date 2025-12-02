@@ -1,59 +1,39 @@
 ![Widgets](./arts/screenshot.jpg)
 
-# Widgets Plugin for Laravilt
+# Laravilt Widgets
 
 [![Latest Stable Version](https://poser.pugx.org/laravilt/widgets/version.svg)](https://packagist.org/packages/laravilt/widgets)
 [![License](https://poser.pugx.org/laravilt/widgets/license.svg)](https://packagist.org/packages/laravilt/widgets)
 [![Downloads](https://poser.pugx.org/laravilt/widgets/d/total.svg)](https://packagist.org/packages/laravilt/widgets)
-[![Dependabot Updates](https://github.com/laravilt/widgets/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/laravilt/widgets/actions/workflows/dependabot/dependabot-updates)
-[![PHP Code Styling](https://github.com/laravilt/widgets/actions/workflows/fix-php-code-styling.yml/badge.svg)](https://github.com/laravilt/widgets/actions/workflows/fix-php-code-styling.yml)
-[![Tests](https://github.com/laravilt/widgets/actions/workflows/tests.yml/badge.svg)](https://github.com/laravilt/widgets/actions/workflows/tests.yml)
 
-plugin for Laravilt
+Complete dashboard widget system with stats, charts, and custom widgets for Laravilt. Display key metrics and data visualizations with beautiful, responsive widgets.
+
+## Features
+
+- 📊 **Stats Overview** - Display key metrics with trends
+- 📈 **Charts** - Line, Bar, Pie/Doughnut charts
+- 🎨 **Customization** - Colors, themes, icons
+- 📱 **Responsive** - Mobile-friendly layouts
 
 ## Installation
-
-You can install the plugin via composer:
 
 ```bash
 composer require laravilt/widgets
 ```
 
-The package will automatically register its service provider which handles all Laravel-specific functionality (views, migrations, config, etc.).
-
-## Configuration
-
-Publish the config file:
+## Generator Commands
 
 ```bash
-php artisan vendor:publish --tag="widgets-config"
+php artisan make:widget UserStatsWidget --stats
+php artisan make:widget SalesChartWidget --chart=line
+php artisan make:widget RevenueChartWidget --chart=bar
+php artisan make:widget CategoryChartWidget --chart=pie
 ```
 
-## Assets
+## Documentation
 
-Publish the plugin assets:
-
-```bash
-php artisan vendor:publish --tag="widgets-assets"
-```
-
-## Testing
-
-```bash
-composer test
-```
-
-## Code Style
-
-```bash
-composer format
-```
-
-## Static Analysis
-
-```bash
-composer analyse
-```
+- **[Complete Documentation](docs/index.md)** - All widget types and configuration
+- **[MCP Server Guide](docs/mcp-server.md)** - AI agent integration
 
 ## License
 

@@ -1,0 +1,46 @@
+<?php
+
+namespace {{ namespace }};
+
+use Laravilt\Widgets\Widget;
+
+/**
+ * {{ class }} Widget
+ *
+ * Custom widget for dashboard display.
+ */
+class {{ class }} extends Widget
+{
+    /**
+     * Create the widget.
+     */
+    public static function make(): static
+    {
+        return (new static)
+            ->heading('Widget Title')
+            ->description('Widget description')
+            ->icon('chart-bar')
+            ->color('primary');
+    }
+
+    /**
+     * Get the widget data.
+     */
+    public function toInertiaProps(): array
+    {
+        return [
+            'component' => 'CustomWidget',
+            'heading' => $this->heading,
+            'description' => $this->description,
+            'icon' => $this->icon,
+            'color' => $this->color,
+            'data' => [
+                // Add your widget data here
+            ],
+            'polling' => [
+                'enabled' => $this->pollingEnabled,
+                'interval' => $this->pollingInterval,
+            ],
+        ];
+    }
+}

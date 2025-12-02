@@ -1,0 +1,47 @@
+<?php
+
+namespace {{ namespace }};
+
+use Laravilt\Widgets\StatsOverviewWidget;
+use Laravilt\Widgets\Stat;
+
+/**
+ * {{ class }} Widget
+ *
+ * Stats overview widget for displaying key metrics.
+ */
+class {{ class }}
+{
+    /**
+     * Create the widget.
+     */
+    public static function make(): StatsOverviewWidget
+    {
+        return StatsOverviewWidget::make()
+            ->heading('Overview')
+            ->description('Key metrics overview')
+            ->stats([
+                Stat::make('Total Users', fn () => 1500)
+                    ->description('+12% from last month')
+                    ->descriptionIcon('trending-up', 'success')
+                    ->icon('users')
+                    ->color('primary')
+                    ->chart('line', [10, 20, 15, 25, 20, 30, 28], 'success'),
+
+                Stat::make('Revenue', fn () => '$45,000')
+                    ->description('+8% from last month')
+                    ->descriptionIcon('trending-up', 'success')
+                    ->icon('dollar-sign')
+                    ->color('success')
+                    ->url('/revenue'),
+
+                Stat::make('Orders', fn () => 350)
+                    ->description('-2% from last month')
+                    ->descriptionIcon('trending-down', 'danger')
+                    ->icon('shopping-cart')
+                    ->color('warning'),
+            ])
+            ->columns(3)
+            ->polling(60);
+    }
+}

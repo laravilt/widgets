@@ -1,0 +1,40 @@
+<?php
+
+namespace {{ namespace }};
+
+use Laravilt\Widgets\LineChartWidget;
+
+/**
+ * {{ class }} Widget
+ *
+ * Line chart widget for displaying trends.
+ */
+class {{ class }}
+{
+    /**
+     * Create the widget.
+     */
+    public static function make(): LineChartWidget
+    {
+        return LineChartWidget::make(
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [
+                [
+                    'label' => 'Sales',
+                    'data' => fn () => [100, 200, 150, 300, 250, 400],
+                    'borderColor' => 'rgb(59, 130, 246)',
+                    'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
+                ],
+            ]
+        )
+            ->heading('Sales Over Time')
+            ->description('Monthly sales performance')
+            ->height(300)
+            ->color('primary')
+            ->curved()
+            ->fill()
+            ->showPoints()
+            ->showGrid()
+            ->polling(60);
+    }
+}
