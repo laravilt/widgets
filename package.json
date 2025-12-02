@@ -1,14 +1,57 @@
 {
-    "name": "{{ package }}",
+    "name": "@laravilt/widgets",
     "version": "1.0.0",
-    "private": true,
+    "description": "Complete dashboard widget system with stats, charts, and custom widgets. Display key metrics and data visualizations with stats overview, line/bar/pie charts, and beautiful responsive widgets.",
+    "author": "Fady Mondy <info@3x1.io>",
+    "license": "MIT",
     "type": "module",
+    "main": "./dist/widgets.umd.js",
+    "module": "./dist/widgets.es.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/widgets.es.js",
+            "require": "./dist/widgets.umd.js"
+        },
+        "./style.css": "./dist/style.css"
+    },
+    "files": [
+        "dist",
+        "resources"
+    ],
+    "keywords": [
+        "laravilt",
+        "widgets",
+        "dashboard",
+        "vue",
+        "vue3",
+        "charts",
+        "stats",
+        "visualization",
+        "inertia",
+        "laravel"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/laravilt/widgets"
+    },
+    "bugs": {
+        "url": "https://github.com/laravilt/widgets/issues"
+    },
+    "homepage": "https://laravilt.dev/widgets",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
+        "build:types": "vue-tsc --declaration --emitDeclarationOnly --outDir dist resources/js/app.ts || true",
+        "build:npm": "npm run build",
+        "prepublishOnly": "npm run build:npm",
         "format": "prettier --write resources/",
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix"
+    },
+    "peerDependencies": {
+        "vue": "^3.3.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",
@@ -25,19 +68,11 @@
         "typescript": "^5.2.2",
         "typescript-eslint": "^8.23.0",
         "vite": "^7.0.4",
+        "vue": "^3.5.13",
         "vue-tsc": "^2.2.4"
     },
     "dependencies": {
-        "laravel-vite-plugin": "^2.0.0",
-        "tailwindcss": "^4.1.1",
-        "vue": "^3.5.13"
-    },
-    "optionalDependencies": {
-        "@rollup/rollup-linux-x64-gnu": "4.9.5",
-        "@rollup/rollup-win32-x64-msvc": "4.9.5",
-        "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
-        "@tailwindcss/oxide-win32-x64-msvc": "^4.0.1",
-        "lightningcss-linux-x64-gnu": "^1.29.1",
-        "lightningcss-win32-x64-msvc": "^1.29.1"
+        "@laravilt/widgets": "file:laravilt-widgets-1.0.0.tgz",
+        "tailwindcss": "^4.1.1"
     }
 }
