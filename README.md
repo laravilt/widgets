@@ -5,6 +5,10 @@
 [![Latest Stable Version](https://poser.pugx.org/laravilt/widgets/version.svg)](https://packagist.org/packages/laravilt/widgets)
 [![License](https://poser.pugx.org/laravilt/widgets/license.svg)](https://packagist.org/packages/laravilt/widgets)
 [![Downloads](https://poser.pugx.org/laravilt/widgets/d/total.svg)](https://packagist.org/packages/laravilt/widgets)
+[![Dependabot Updates](https://github.com/laravilt/widgets/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/laravilt/widgets/actions/workflows/dependabot/dependabot-updates)
+[![PHP Code Styling](https://github.com/laravilt/widgets/actions/workflows/fix-php-code-styling.yml/badge.svg)](https://github.com/laravilt/widgets/actions/workflows/fix-php-code-styling.yml)
+[![Tests](https://github.com/laravilt/widgets/actions/workflows/tests.yml/badge.svg)](https://github.com/laravilt/widgets/actions/workflows/tests.yml)
+
 
 Complete dashboard widget system with stats, charts, and custom widgets for Laravilt. Display key metrics and data visualizations with beautiful, responsive widgets.
 
