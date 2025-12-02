@@ -1,4 +1,4 @@
-![Widgets](./arts/screenshot.jpg)
+![widgets](https://raw.githubusercontent.com/laravilt/widgets/master/arts/screenshot.jpg)
 
 # Laravilt Widgets
 
