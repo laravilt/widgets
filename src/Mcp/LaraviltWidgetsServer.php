@@ -9,6 +9,7 @@ use Laravilt\Widgets\Mcp\Tools\SearchDocsTool;
 class LaraviltWidgetsServer extends Server
 {
     protected string $name = 'Laravilt Widgets';
+
     protected string $version = '1.0.0';
 
     protected string $instructions = <<<'MARKDOWN'
