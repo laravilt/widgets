@@ -15,8 +15,6 @@
 export default {
     install(app, options = {}) {
         // Plugin installation logic
-        console.log('Widgets plugin installed', options);
-
         // Register global components
         // app.component('WidgetsComponent', ComponentName);
 
