@@ -69,7 +69,7 @@ class Stat
         return $this;
     }
 
-    public function chart(string $type, array $data, ?string $color = null): static
+    public function chart( array $data, ?string $type="bar", ?string $color = null): static
     {
         $this->chart = $type;
         $this->chartData = $data;
