@@ -1,6 +1,6 @@
 {
     "name": "@laravilt/widgets",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "description": "Complete dashboard widget system with stats, charts, and custom widgets. Display key metrics and data visualizations with stats overview, line/bar/pie charts, and beautiful responsive widgets.",
     "author": "Fady Mondy <info@3x1.io>",
     "license": "MIT",
