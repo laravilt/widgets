@@ -98,6 +98,14 @@ class StatTest extends TestCase
     }
 
     #[Test]
+    public function it_rejects_a_non_string_chart_type(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Stat::make('Revenue', 45000)->chart([5, 15], []);
+    }
+
+    #[Test]
     public function it_can_set_url(): void
     {
         $stat = Stat::make('Users', 1500)->url('/users');

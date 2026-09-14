@@ -85,6 +85,10 @@ class Stat
             throw new \InvalidArgumentException('Stat chart data must be an array of numbers.');
         }
 
+        if ($type !== null && ! is_string($type)) {
+            throw new \InvalidArgumentException('Stat chart type must be a string.');
+        }
+
         $this->chart = $type;
         $this->chartData = $data;
         $this->chartColor = $color;
