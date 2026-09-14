@@ -6,10 +6,11 @@ namespace Laravilt\Widgets\Tests\Unit;
 
 use Laravilt\Widgets\BarChartWidget;
 use Laravilt\Widgets\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class BarChartWidgetTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated(): void
     {
         $widget = BarChartWidget::make();
@@ -17,7 +18,7 @@ class BarChartWidgetTest extends TestCase
         expect($widget)->toBeInstanceOf(BarChartWidget::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated_with_data(): void
     {
         $widget = BarChartWidget::make(
@@ -36,7 +37,7 @@ class BarChartWidgetTest extends TestCase
             ->and($props['data']['datasets'])->toHaveCount(1);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_chart_type_bar(): void
     {
         $widget = BarChartWidget::make();
@@ -45,7 +46,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['chartType'])->toBe('bar');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_heading(): void
     {
         $widget = BarChartWidget::make()->heading('Product Sales');
@@ -54,7 +55,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['heading'])->toBe('Product Sales');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_description(): void
     {
         $widget = BarChartWidget::make()->description('Sales by product');
@@ -63,7 +64,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['description'])->toBe('Sales by product');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_data(): void
     {
         $widget = BarChartWidget::make()->data([
@@ -82,7 +83,7 @@ class BarChartWidgetTest extends TestCase
             ->and($props['data']['datasets'][0]['label'])->toBe('Revenue');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_horizontal(): void
     {
         $widget = BarChartWidget::make()->horizontal();
@@ -91,7 +92,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['options']['horizontal'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_disable_horizontal(): void
     {
         $widget = BarChartWidget::make()->horizontal(false);
@@ -100,7 +101,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['options']['horizontal'])->toBeFalse();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_stacked(): void
     {
         $widget = BarChartWidget::make()->stacked();
@@ -109,7 +110,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['options']['stacked'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_grid(): void
     {
         $widget = BarChartWidget::make()->showGrid();
@@ -118,7 +119,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['options']['showGrid'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_bar_thickness(): void
     {
         $widget = BarChartWidget::make()->barThickness(20);
@@ -127,7 +128,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['options']['barThickness'])->toBe(20);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_height(): void
     {
         $widget = BarChartWidget::make()->height(400);
@@ -136,7 +137,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['height'])->toBe(400);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_color(): void
     {
         $widget = BarChartWidget::make()->color('primary');
@@ -145,7 +146,7 @@ class BarChartWidgetTest extends TestCase
         expect($props['color'])->toBe('primary');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_enable_polling(): void
     {
         $widget = BarChartWidget::make()->polling(45);
@@ -155,7 +156,7 @@ class BarChartWidgetTest extends TestCase
             ->and($props['polling']['interval'])->toBe(45);
     }
 
-    /** @test */
+    #[Test]
     public function it_serializes_to_inertia_props(): void
     {
         $widget = BarChartWidget::make(
@@ -176,7 +177,7 @@ class BarChartWidgetTest extends TestCase
             ->and($props['chartType'])->toBe('bar');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_chain_methods(): void
     {
         $widget = BarChartWidget::make()

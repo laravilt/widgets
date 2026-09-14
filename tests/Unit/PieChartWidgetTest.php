@@ -6,10 +6,11 @@ namespace Laravilt\Widgets\Tests\Unit;
 
 use Laravilt\Widgets\PieChartWidget;
 use Laravilt\Widgets\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class PieChartWidgetTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated(): void
     {
         $widget = PieChartWidget::make();
@@ -17,7 +18,7 @@ class PieChartWidgetTest extends TestCase
         expect($widget)->toBeInstanceOf(PieChartWidget::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated_with_data(): void
     {
         $widget = PieChartWidget::make(
@@ -31,7 +32,7 @@ class PieChartWidgetTest extends TestCase
             ->and($props['data']['datasets'][0]['data'])->toBe([300, 50, 100]);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_chart_type_pie(): void
     {
         $widget = PieChartWidget::make();
@@ -40,7 +41,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['chartType'])->toBe('pie');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_heading(): void
     {
         $widget = PieChartWidget::make()->heading('Market Share');
@@ -49,7 +50,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['heading'])->toBe('Market Share');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_description(): void
     {
         $widget = PieChartWidget::make()->description('Distribution by category');
@@ -58,7 +59,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['description'])->toBe('Distribution by category');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_data(): void
     {
         $widget = PieChartWidget::make()->data([
@@ -76,7 +77,7 @@ class PieChartWidgetTest extends TestCase
             ->and($props['data']['datasets'][0]['data'])->toBe([100, 200, 150]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_doughnut(): void
     {
         $widget = PieChartWidget::make()->doughnut();
@@ -85,7 +86,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['chartType'])->toBe('doughnut');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_toggle_doughnut(): void
     {
         $widget = PieChartWidget::make()->doughnut(false);
@@ -94,7 +95,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['chartType'])->toBe('pie');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_legend(): void
     {
         $widget = PieChartWidget::make()->showLegend();
@@ -103,7 +104,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['options']['showLegend'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_hide_legend(): void
     {
         $widget = PieChartWidget::make()->showLegend(false);
@@ -112,7 +113,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['options']['showLegend'])->toBeFalse();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_percentage(): void
     {
         $widget = PieChartWidget::make()->showPercentage();
@@ -121,7 +122,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['options']['showPercentage'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_height(): void
     {
         $widget = PieChartWidget::make()->height(300);
@@ -130,7 +131,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['height'])->toBe(300);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_color(): void
     {
         $widget = PieChartWidget::make()->color('primary');
@@ -139,7 +140,7 @@ class PieChartWidgetTest extends TestCase
         expect($props['color'])->toBe('primary');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_enable_polling(): void
     {
         $widget = PieChartWidget::make()->polling(20);
@@ -149,7 +150,7 @@ class PieChartWidgetTest extends TestCase
             ->and($props['polling']['interval'])->toBe(20);
     }
 
-    /** @test */
+    #[Test]
     public function it_serializes_to_inertia_props(): void
     {
         $widget = PieChartWidget::make(
@@ -170,7 +171,7 @@ class PieChartWidgetTest extends TestCase
             ->and($props['chartType'])->toBe('doughnut');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_chain_methods(): void
     {
         $widget = PieChartWidget::make()
