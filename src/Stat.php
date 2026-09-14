@@ -69,8 +69,22 @@ class Stat
         return $this;
     }
 
-    public function chart(array $data, ?string $type = 'bar', ?string $color = null): static
+    /**
+     * Attach a sparkline chart. Accepts chart($data, $type, $color) and the older chart($type, $data, $color).
+     *
+     * @param  array<int, int|float>|string  $data
+     * @param  array<int, int|float>|string|null  $type
+     */
+    public function chart(array|string $data, array|string|null $type = 'bar', ?string $color = null): static
     {
+        if (is_string($data) && is_array($type)) {
+            [$data, $type] = [$type, $data];
+        }
+
+        if (! is_array($data)) {
+            throw new \InvalidArgumentException('Stat chart data must be an array of numbers.');
+        }
+
         $this->chart = $type;
         $this->chartData = $data;
         $this->chartColor = $color;

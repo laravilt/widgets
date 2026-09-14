@@ -7,10 +7,11 @@ namespace Laravilt\Widgets\Tests\Unit;
 use Laravilt\Widgets\Stat;
 use Laravilt\Widgets\StatsOverviewWidget;
 use Laravilt\Widgets\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class StatsOverviewWidgetTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated(): void
     {
         $widget = StatsOverviewWidget::make();
@@ -18,7 +19,7 @@ class StatsOverviewWidgetTest extends TestCase
         expect($widget)->toBeInstanceOf(StatsOverviewWidget::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_heading(): void
     {
         $widget = StatsOverviewWidget::make()->heading('Overview');
@@ -27,7 +28,7 @@ class StatsOverviewWidgetTest extends TestCase
         expect($props['heading'])->toBe('Overview');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_description(): void
     {
         $widget = StatsOverviewWidget::make()->description('Monthly statistics');
@@ -36,7 +37,7 @@ class StatsOverviewWidgetTest extends TestCase
         expect($props['description'])->toBe('Monthly statistics');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_stats(): void
     {
         $stats = [
@@ -52,7 +53,7 @@ class StatsOverviewWidgetTest extends TestCase
             ->and($props['stats'][0]['value'])->toBe(1500);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_columns(): void
     {
         $widget = StatsOverviewWidget::make()->columns(4);
@@ -61,7 +62,7 @@ class StatsOverviewWidgetTest extends TestCase
         expect($props['columns'])->toBe(4);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_default_columns_of_3(): void
     {
         $widget = StatsOverviewWidget::make();
@@ -70,7 +71,7 @@ class StatsOverviewWidgetTest extends TestCase
         expect($props['columns'])->toBe(3);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_enable_polling(): void
     {
         $widget = StatsOverviewWidget::make()->polling(30);
@@ -80,7 +81,7 @@ class StatsOverviewWidgetTest extends TestCase
             ->and($props['polling']['interval'])->toBe(30);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_default_polling_interval(): void
     {
         $widget = StatsOverviewWidget::make()->polling();
@@ -90,7 +91,7 @@ class StatsOverviewWidgetTest extends TestCase
             ->and($props['polling']['interval'])->toBe(10);
     }
 
-    /** @test */
+    #[Test]
     public function it_serializes_to_inertia_props(): void
     {
         $stats = [
@@ -110,7 +111,7 @@ class StatsOverviewWidgetTest extends TestCase
             ->and($props['component'])->toBe('StatsOverviewWidget');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_chain_methods(): void
     {
         $stats = [

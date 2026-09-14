@@ -6,10 +6,11 @@ namespace Laravilt\Widgets\Tests\Unit;
 
 use Laravilt\Widgets\Stat;
 use Laravilt\Widgets\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class StatTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated(): void
     {
         $stat = Stat::make('Users', 1500);
@@ -17,7 +18,7 @@ class StatTest extends TestCase
         expect($stat)->toBeInstanceOf(Stat::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_label_and_value(): void
     {
         $stat = Stat::make('Revenue', 45000);
@@ -27,7 +28,7 @@ class StatTest extends TestCase
             ->and($props['value'])->toBe(45000);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_use_closure_for_value(): void
     {
         $stat = Stat::make('Dynamic', fn () => 100 * 2);
@@ -36,7 +37,7 @@ class StatTest extends TestCase
         expect($props['value'])->toBe(200);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_description(): void
     {
         $stat = Stat::make('Users', 1500)->description('Total active users');
@@ -45,7 +46,7 @@ class StatTest extends TestCase
         expect($props['description'])->toBe('Total active users');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_icon(): void
     {
         $stat = Stat::make('Users', 1500)->icon('users');
@@ -54,7 +55,7 @@ class StatTest extends TestCase
         expect($props['icon'])->toBe('users');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_description_icon(): void
     {
         $stat = Stat::make('Revenue', 45000)->descriptionIcon('trending-up', 'success');
@@ -65,7 +66,7 @@ class StatTest extends TestCase
             ->and($props['descriptionColor'])->toBe('success');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_color(): void
     {
         $stat = Stat::make('Users', 1500)->color('primary');
@@ -74,7 +75,7 @@ class StatTest extends TestCase
         expect($props['color'])->toBe('primary');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_chart(): void
     {
         $stat = Stat::make('Revenue', 45000)->chart('line', [10, 20, 30, 40], 'success');
@@ -85,7 +86,18 @@ class StatTest extends TestCase
             ->and($props['chartColor'])->toBe('success');
     }
 
-    /** @test */
+    #[Test]
+    public function it_can_set_chart_with_data_first(): void
+    {
+        $stat = Stat::make('Revenue', 45000)->chart([5, 15, 25], 'bar', 'primary');
+        $props = $stat->toInertiaProps();
+
+        expect($props['chart'])->toBe('bar')
+            ->and($props['chartData'])->toBe([5, 15, 25])
+            ->and($props['chartColor'])->toBe('primary');
+    }
+
+    #[Test]
     public function it_can_set_url(): void
     {
         $stat = Stat::make('Users', 1500)->url('/users');
@@ -94,7 +106,7 @@ class StatTest extends TestCase
         expect($props['url'])->toBe('/users');
     }
 
-    /** @test */
+    #[Test]
     public function it_serializes_to_inertia_props(): void
     {
         $stat = Stat::make('Users', 1500)
@@ -109,7 +121,7 @@ class StatTest extends TestCase
             ->toHaveKeys(['label', 'value', 'description', 'icon', 'color', 'url']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_chain_methods(): void
     {
         $stat = Stat::make('Revenue', 45000)

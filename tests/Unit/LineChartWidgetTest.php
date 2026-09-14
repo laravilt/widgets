@@ -6,10 +6,11 @@ namespace Laravilt\Widgets\Tests\Unit;
 
 use Laravilt\Widgets\LineChartWidget;
 use Laravilt\Widgets\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class LineChartWidgetTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated(): void
     {
         $widget = LineChartWidget::make();
@@ -17,7 +18,7 @@ class LineChartWidgetTest extends TestCase
         expect($widget)->toBeInstanceOf(LineChartWidget::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated_with_data(): void
     {
         $widget = LineChartWidget::make(
@@ -36,7 +37,7 @@ class LineChartWidgetTest extends TestCase
             ->and($props['data']['datasets'])->toHaveCount(1);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_chart_type_line(): void
     {
         $widget = LineChartWidget::make();
@@ -45,7 +46,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['chartType'])->toBe('line');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_heading(): void
     {
         $widget = LineChartWidget::make()->heading('Sales Over Time');
@@ -54,7 +55,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['heading'])->toBe('Sales Over Time');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_description(): void
     {
         $widget = LineChartWidget::make()->description('Monthly sales data');
@@ -63,7 +64,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['description'])->toBe('Monthly sales data');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_data(): void
     {
         $widget = LineChartWidget::make()->data([
@@ -82,7 +83,7 @@ class LineChartWidgetTest extends TestCase
             ->and($props['data']['datasets'][0]['label'])->toBe('Revenue');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_options(): void
     {
         $widget = LineChartWidget::make()->options(['responsive' => true]);
@@ -91,7 +92,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['options']['responsive'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_height(): void
     {
         $widget = LineChartWidget::make()->height(400);
@@ -100,7 +101,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['height'])->toBe(400);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_color(): void
     {
         $widget = LineChartWidget::make()->color('primary');
@@ -109,7 +110,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['color'])->toBe('primary');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_curved(): void
     {
         $widget = LineChartWidget::make()->curved();
@@ -118,7 +119,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['options']['tension'])->toBe(0.4);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_disable_curve(): void
     {
         $widget = LineChartWidget::make()->curved(false);
@@ -127,7 +128,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['options']['tension'])->toBe(0);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_filled(): void
     {
         $widget = LineChartWidget::make()->fill();
@@ -136,7 +137,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['options']['fill'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_points(): void
     {
         $widget = LineChartWidget::make()->showPoints();
@@ -145,7 +146,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['options']['showPoints'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_show_grid(): void
     {
         $widget = LineChartWidget::make()->showGrid();
@@ -154,7 +155,7 @@ class LineChartWidgetTest extends TestCase
         expect($props['options']['showGrid'])->toBeTrue();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_enable_polling(): void
     {
         $widget = LineChartWidget::make()->polling(60);
@@ -164,7 +165,7 @@ class LineChartWidgetTest extends TestCase
             ->and($props['polling']['interval'])->toBe(60);
     }
 
-    /** @test */
+    #[Test]
     public function it_evaluates_closure_data(): void
     {
         $widget = LineChartWidget::make()->data([
@@ -180,7 +181,7 @@ class LineChartWidgetTest extends TestCase
             ->and($props['data']['datasets'][0]['data'])->toBe([10, 20]);
     }
 
-    /** @test */
+    #[Test]
     public function it_serializes_to_inertia_props(): void
     {
         $widget = LineChartWidget::make(
@@ -201,7 +202,7 @@ class LineChartWidgetTest extends TestCase
             ->and($props['chartType'])->toBe('line');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_chain_methods(): void
     {
         $widget = LineChartWidget::make()
