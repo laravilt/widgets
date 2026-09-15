@@ -114,21 +114,33 @@ export default function ChartWidget({ heading, description, chartType, data, opt
 
         return {
             labels,
-            datasets: datasets.map((dataset, datasetIndex) => ({
-                label: dataset.label,
-                color: dataset.backgroundColor || getColorPalette()[datasetIndex % getColorPalette().length],
-                bars: dataset.data.map((value, index) => {
-                    const barHeight = (value / range) * 100;
-                    const x = index * (barWidth * datasets.length + groupGap) + datasetIndex * barWidth;
+            datasets: datasets.map((dataset, datasetIndex) => {
+                const background = dataset.backgroundColor;
+                const color =
+                    (Array.isArray(background) ? background[0] : background) ||
+                    getColorPalette()[datasetIndex % getColorPalette().length];
 
-                    return {
-                        x,
-                        width: barWidth - 1,
-                        height: barHeight,
-                        value,
-                    };
-                }),
-            })),
+                return {
+                    label: dataset.label,
+                    color,
+                    bars: dataset.data.map((value, index) => {
+                        const barHeight = (value / range) * 100;
+                        const x = index * (barWidth * datasets.length + groupGap) + datasetIndex * barWidth;
+
+                        return {
+                            x,
+                            width: barWidth - 1,
+                            height: barHeight,
+                            value,
+                            // An array of colors assigns one color per bar (Chart.js convention).
+                            color:
+                                Array.isArray(background) && background.length > 0
+                                    ? background[index % background.length]
+                                    : color,
+                        };
+                    }),
+                };
+            }),
         };
     }, [chartType, data]);
 
@@ -270,7 +282,7 @@ export default function ChartWidget({ heading, description, chartType, data, opt
                                     y={100 - bar.height}
                                     width={bar.width}
                                     height={bar.height}
-                                    fill={dataset.color as string}
+                                    fill={bar.color}
                                     rx="1"
                                     className="transition-opacity hover:opacity-80"
                                 />

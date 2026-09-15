@@ -1,5 +1,5 @@
 import { router } from '@inertiajs/react';
-import { useEffect, useRef, type ComponentType } from 'react';
+import { useEffect, type ComponentType } from 'react';
 import ChartWidget from './ChartWidget';
 import StatsOverviewWidget from './StatsOverviewWidget';
 
@@ -14,41 +14,40 @@ const componentMap: Record<string, ComponentType<any>> = {
 };
 
 export default function WidgetRenderer({ widgets, queryRoute }: WidgetRendererProps) {
-    const pollingIntervals = useRef<Map<number, ReturnType<typeof setInterval>>>(new Map());
+    // Each tick reloads every widget, so widgets sharing an interval share one timer.
+    // A string key keeps the effect stable across reloads that don't change the polling configuration.
+    const pollingIntervals = queryRoute
+        ? Array.from(
+              new Set(
+                  widgets
+                      .filter((widget) => widget.polling?.enabled)
+                      .map((widget) => (widget.polling.interval || 10) * 1000),
+              ),
+          )
+              .sort((a, b) => a - b)
+              .join(',')
+        : '';
 
-    // onMounted / onUnmounted — polling is set up once, from the widgets present at mount (like Vue)
     useEffect(() => {
-        const intervals = pollingIntervals.current;
+        if (!pollingIntervals) {
+            return;
+        }
 
-        const setupPolling = (widget: any, index: number) => {
-            if (!widget.polling?.enabled || !queryRoute) {
-                return;
-            }
-
-            const interval = (widget.polling.interval || 10) * 1000;
-
-            const timerId = setInterval(() => {
+        const timerIds = pollingIntervals.split(',').map((interval) =>
+            setInterval(() => {
                 // Inertia v3 reloads always preserve state and scroll (Vue passed preserveState/preserveScroll: true)
                 router.reload({
                     only: ['widgets'],
                 });
-            }, interval);
-
-            intervals.set(index, timerId);
-        };
-
-        widgets.forEach((widget, index) => {
-            setupPolling(widget, index);
-        });
+            }, Number(interval)),
+        );
 
         return () => {
-            intervals.forEach((timerId) => {
+            timerIds.forEach((timerId) => {
                 clearInterval(timerId);
             });
-            intervals.clear();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [pollingIntervals]);
 
     return (
         <div className="space-y-6">

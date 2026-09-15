@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { cn } from '@/lib/utils';
 
 export interface Stat {
@@ -72,12 +72,6 @@ const getDescriptionColorClasses = (color?: string): string => {
     return colorMap[color] || 'text-muted-foreground';
 };
 
-const handleStatClick = (url?: string) => {
-    if (url) {
-        router.visit(url);
-    }
-};
-
 const renderMiniChart = (stat: Stat): MiniChart | null => {
     if (!stat.chart || !stat.chartData || stat.chartData.length === 0) {
         return null;
@@ -88,9 +82,12 @@ const renderMiniChart = (stat: Stat): MiniChart | null => {
     const range = max - min || 1;
 
     if (stat.chart === 'line') {
-        const points = stat.chartData
+        // A single value has no segment to draw (and would divide by zero), so render it as a flat line.
+        const values = stat.chartData.length === 1 ? [stat.chartData[0], stat.chartData[0]] : stat.chartData;
+
+        const points = values
             .map((value, index) => {
-                const x = (index / (stat.chartData!.length - 1)) * 100;
+                const x = (index / (values.length - 1)) * 100;
                 const y = 100 - ((value - min) / range) * 100;
 
                 return `${x},${y}`;
@@ -128,7 +125,7 @@ const getChartColorClasses = (color?: string): { stroke: string; fill: string } 
         gray: { stroke: 'stroke-gray-600 dark:stroke-gray-500', fill: 'fill-gray-600 dark:fill-gray-500' },
     };
 
-    return colorMap[color || 'primary'];
+    return colorMap[color || 'primary'] ?? colorMap.primary;
 };
 
 export default function StatsOverviewWidget({ heading, description, stats, columns = 3 }: StatsOverviewWidgetProps) {
@@ -147,81 +144,91 @@ export default function StatsOverviewWidget({ heading, description, stats, colum
                 {stats.map((stat, index) => {
                     const miniChart = renderMiniChart(stat);
 
-                    return (
-                        <div
-                            key={index}
-                            className={cn('relative overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all', {
-                                'cursor-pointer hover:shadow-md hover:border-primary/50': stat.url,
-                            })}
-                            onClick={() => handleStatClick(stat.url)}
-                        >
-                            <div className="p-6">
-                                {/* Header with Icon and Label */}
-                                <div className="flex items-start justify-between gap-3 mb-4">
-                                    <div className="space-y-1 flex-1 min-w-0">
-                                        <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
-                                    </div>
-                                    {stat.icon && !stat.descriptionIcon && (
-                                        <div className={cn('flex-shrink-0 p-2 rounded-lg bg-primary/10', getColorClasses(stat.color))}>
-                                            <i className={cn(stat.icon, 'text-lg')}></i>
-                                        </div>
-                                    )}
+                    const content = (
+                        <div className="p-6">
+                            {/* Header with Icon and Label */}
+                            <div className="flex items-start justify-between gap-3 mb-4">
+                                <div className="space-y-1 flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
                                 </div>
-
-                                {/* Value */}
-                                <div className="mb-3">
-                                    <div className={cn('text-2xl font-semibold tracking-tight', getColorClasses(stat.color))}>
-                                        {stat.value}
-                                    </div>
-                                </div>
-
-                                {/* Description or Chart */}
-                                {(stat.description || miniChart) && (
-                                    <div>
-                                        {stat.description ? (
-                                            <div
-                                                className={cn(
-                                                    'flex items-center gap-1.5 text-xs font-medium',
-                                                    getDescriptionColorClasses(stat.descriptionColor),
-                                                )}
-                                            >
-                                                {stat.descriptionIcon && stat.icon && <i className={cn(stat.icon, 'text-sm')}></i>}
-                                                <span>{stat.description}</span>
-                                            </div>
-                                        ) : miniChart ? (
-                                            /* Mini Chart */
-                                            <div className="h-10 -mx-1">
-                                                {miniChart.type === 'line' ? (
-                                                    <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                                                        <polyline
-                                                            points={miniChart.points}
-                                                            fill="none"
-                                                            className={getChartColorClasses(miniChart.color).stroke}
-                                                            strokeWidth="3"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            opacity="0.8"
-                                                        />
-                                                    </svg>
-                                                ) : miniChart.type === 'bar' ? (
-                                                    <div className="flex items-end justify-between h-full gap-1">
-                                                        {miniChart.data.map((bar, barIndex) => (
-                                                            <div
-                                                                key={barIndex}
-                                                                className={cn(
-                                                                    'flex-1 rounded-t transition-all',
-                                                                    getChartColorClasses(miniChart.color).fill,
-                                                                )}
-                                                                style={{ height: `${bar.height}%`, opacity: 0.8 }}
-                                                            ></div>
-                                                        ))}
-                                                    </div>
-                                                ) : null}
-                                            </div>
-                                        ) : null}
+                                {stat.icon && !stat.descriptionIcon && (
+                                    <div className={cn('flex-shrink-0 p-2 rounded-lg bg-primary/10', getColorClasses(stat.color))}>
+                                        <i className={cn(stat.icon, 'text-lg')}></i>
                                     </div>
                                 )}
                             </div>
+
+                            {/* Value */}
+                            <div className="mb-3">
+                                <div className={cn('text-2xl font-semibold tracking-tight', getColorClasses(stat.color))}>
+                                    {stat.value}
+                                </div>
+                            </div>
+
+                            {/* Description or Chart */}
+                            {(stat.description || miniChart) && (
+                                <div>
+                                    {stat.description ? (
+                                        <div
+                                            className={cn(
+                                                'flex items-center gap-1.5 text-xs font-medium',
+                                                getDescriptionColorClasses(stat.descriptionColor),
+                                            )}
+                                        >
+                                            {stat.descriptionIcon && stat.icon && <i className={cn(stat.icon, 'text-sm')}></i>}
+                                            <span>{stat.description}</span>
+                                        </div>
+                                    ) : miniChart ? (
+                                        /* Mini Chart */
+                                        <div className="h-10 -mx-1">
+                                            {miniChart.type === 'line' ? (
+                                                <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                    <polyline
+                                                        points={miniChart.points}
+                                                        fill="none"
+                                                        className={getChartColorClasses(miniChart.color).stroke}
+                                                        strokeWidth="3"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        opacity="0.8"
+                                                    />
+                                                </svg>
+                                            ) : miniChart.type === 'bar' ? (
+                                                <div className="flex items-end justify-between h-full gap-1">
+                                                    {miniChart.data.map((bar, barIndex) => (
+                                                        <div
+                                                            key={barIndex}
+                                                            className={cn(
+                                                                'flex-1 rounded-t transition-all',
+                                                                getChartColorClasses(miniChart.color).fill,
+                                                            )}
+                                                            style={{ height: `${bar.height}%`, opacity: 0.8 }}
+                                                        ></div>
+                                                    ))}
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    ) : null}
+                                </div>
+                            )}
+                        </div>
+                    );
+
+                    const cardClassName =
+                        'relative overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all';
+
+                    // Linked cards are real links, so keyboard users can focus and activate them.
+                    return stat.url ? (
+                        <Link
+                            key={index}
+                            href={stat.url}
+                            className={cn(cardClassName, 'cursor-pointer hover:shadow-md hover:border-primary/50')}
+                        >
+                            {content}
+                        </Link>
+                    ) : (
+                        <div key={index} className={cardClassName}>
+                            {content}
                         </div>
                     );
                 })}
