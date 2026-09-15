@@ -163,7 +163,11 @@ export default function ChartWidget({ heading, description, chartType, data, opt
             return null;
         }
 
-        const colors = Array.isArray(dataset.backgroundColor) ? dataset.backgroundColor : getColorPalette();
+        // An empty color array would yield undefined fills, so fall back to the palette.
+        const colors =
+            Array.isArray(dataset.backgroundColor) && dataset.backgroundColor.length > 0
+                ? dataset.backgroundColor
+                : getColorPalette();
 
         let currentAngle = -90; // Start from top
 

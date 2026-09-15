@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onUnmounted, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
 import StatsOverviewWidget from './StatsOverviewWidget.vue'
 import ChartWidget from './ChartWidget.vue'
@@ -11,49 +11,55 @@ interface WidgetRendererProps {
 
 const props = defineProps<WidgetRendererProps>()
 
-const pollingIntervals = ref<Map<number, NodeJS.Timeout>>(new Map())
-
 const componentMap: Record<string, any> = {
     'StatsOverviewWidget': StatsOverviewWidget,
     'ChartWidget': ChartWidget,
 }
 
-const setupPolling = (widget: any, index: number) => {
-    if (!widget.polling?.enabled || !props.queryRoute) return
+// Each tick reloads every widget, so widgets sharing an interval share one timer.
+// A string key keeps the watcher stable across reloads that don't change the polling configuration.
+const pollingIntervals = computed(() => {
+    if (!props.queryRoute) return ''
 
-    const interval = (widget.polling.interval || 10) * 1000
-
-    const timerId = setInterval(() => {
-        router.reload({
-            only: ['widgets'],
-            preserveState: true,
-            preserveScroll: true,
-        })
-    }, interval)
-
-    pollingIntervals.value.set(index, timerId)
-}
-
-const clearPolling = (index: number) => {
-    const timerId = pollingIntervals.value.get(index)
-    if (timerId) {
-        clearInterval(timerId)
-        pollingIntervals.value.delete(index)
-    }
-}
-
-onMounted(() => {
-    props.widgets.forEach((widget, index) => {
-        setupPolling(widget, index)
-    })
+    return Array.from(
+        new Set(
+            props.widgets
+                .filter((widget) => widget.polling?.enabled)
+                .map((widget) => (widget.polling.interval || 10) * 1000),
+        ),
+    )
+        .sort((a, b) => a - b)
+        .join(',')
 })
 
-onUnmounted(() => {
-    pollingIntervals.value.forEach((timerId) => {
-        clearInterval(timerId)
-    })
-    pollingIntervals.value.clear()
-})
+let timerIds: ReturnType<typeof setInterval>[] = []
+
+const clearPolling = () => {
+    timerIds.forEach((timerId) => clearInterval(timerId))
+    timerIds = []
+}
+
+watch(
+    pollingIntervals,
+    (intervals) => {
+        clearPolling()
+
+        if (!intervals) return
+
+        timerIds = intervals.split(',').map((interval) =>
+            setInterval(() => {
+                router.reload({
+                    only: ['widgets'],
+                    preserveState: true,
+                    preserveScroll: true,
+                })
+            }, Number(interval)),
+        )
+    },
+    { immediate: true },
+)
+
+onUnmounted(clearPolling)
 </script>
 
 <template>
