@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
 
 interface Stat {
     label: string
@@ -73,12 +73,6 @@ const getDescriptionColorClasses = (color?: string) => {
     return colorMap[color] || 'text-muted-foreground'
 }
 
-const handleStatClick = (url?: string) => {
-    if (url) {
-        router.visit(url)
-    }
-}
-
 const renderMiniChart = (stat: Stat) => {
     if (!stat.chart || !stat.chartData || stat.chartData.length === 0) {
         return null
@@ -89,8 +83,11 @@ const renderMiniChart = (stat: Stat) => {
     const range = max - min || 1
 
     if (stat.chart === 'line') {
-        const points = stat.chartData.map((value, index) => {
-            const x = (index / (stat.chartData!.length - 1)) * 100
+        // A single value has no segment to draw (and would divide by zero), so render it as a flat line.
+        const values = stat.chartData.length === 1 ? [stat.chartData[0], stat.chartData[0]] : stat.chartData
+
+        const points = values.map((value, index) => {
+            const x = (index / (values.length - 1)) * 100
             const y = 100 - ((value - min) / range) * 100
             return `${x},${y}`
         }).join(' ')
@@ -126,7 +123,7 @@ const getChartColorClasses = (color?: string) => {
         gray: { stroke: 'stroke-gray-600 dark:stroke-gray-500', fill: 'fill-gray-600 dark:fill-gray-500' },
     }
 
-    return colorMap[color || 'primary']
+    return colorMap[color || 'primary'] ?? colorMap.primary
 }
 </script>
 
@@ -138,14 +135,16 @@ const getChartColorClasses = (color?: string) => {
         </div>
 
         <div :class="['grid gap-6', gridCols]">
-            <div
+            <!-- Linked cards are real links, so keyboard users can focus and activate them. -->
+            <component
+                :is="stat.url ? Link : 'div'"
                 v-for="(stat, index) in stats"
                 :key="index"
+                v-bind="stat.url ? { href: stat.url } : {}"
                 class="relative overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all"
                 :class="{
                     'cursor-pointer hover:shadow-md hover:border-primary/50': stat.url
                 }"
-                @click="handleStatClick(stat.url)"
             >
                 <div class="p-6">
                     <!-- Header with Icon and Label -->
@@ -208,7 +207,7 @@ const getChartColorClasses = (color?: string) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </component>
         </div>
     </div>
 </template>

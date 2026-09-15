@@ -103,20 +103,30 @@ const renderBarChart = computed(() => {
 
     return {
         labels,
-        datasets: datasets.map((dataset, datasetIndex) => ({
-            label: dataset.label,
-            color: dataset.backgroundColor || getColorPalette()[datasetIndex % getColorPalette().length],
-            bars: dataset.data.map((value, index) => {
-                const height = (value / range) * 100
-                const x = index * (barWidth * datasets.length + groupGap) + datasetIndex * barWidth
-                return {
-                    x,
-                    width: barWidth - 1,
-                    height,
-                    value
-                }
-            })
-        }))
+        datasets: datasets.map((dataset, datasetIndex) => {
+            const background = dataset.backgroundColor
+            const color = (Array.isArray(background) ? background[0] : background)
+                || getColorPalette()[datasetIndex % getColorPalette().length]
+
+            return {
+                label: dataset.label,
+                color,
+                bars: dataset.data.map((value, index) => {
+                    const height = (value / range) * 100
+                    const x = index * (barWidth * datasets.length + groupGap) + datasetIndex * barWidth
+                    return {
+                        x,
+                        width: barWidth - 1,
+                        height,
+                        value,
+                        // An array of colors assigns one color per bar (Chart.js convention).
+                        color: Array.isArray(background) && background.length > 0
+                            ? background[index % background.length]
+                            : color,
+                    }
+                })
+            }
+        })
     }
 })
 
@@ -132,7 +142,8 @@ const renderPieChart = computed(() => {
 
     if (total === 0) return null
 
-    const colors = Array.isArray(dataset.backgroundColor)
+    // An empty color array would yield undefined fills, so fall back to the palette.
+    const colors = Array.isArray(dataset.backgroundColor) && dataset.backgroundColor.length > 0
         ? dataset.backgroundColor
         : getColorPalette()
 
@@ -228,7 +239,7 @@ const renderPieChart = computed(() => {
                             :y="100 - bar.height"
                             :width="bar.width"
                             :height="bar.height"
-                            :fill="dataset.color"
+                            :fill="bar.color"
                             rx="1"
                             class="transition-opacity hover:opacity-80"
                         />
